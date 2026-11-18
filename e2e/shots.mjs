@@ -1,0 +1,35 @@
+// Screenshot tour of every screen (used for the README and to catch UI errors).
+import { chromium } from "@playwright/test";
+const BASE = process.env.BASE_URL || "http://localhost:8000";
+const OUT = process.argv[2] || "../docs/screenshots";
+const browser = await chromium.launch();
+const page = await browser.newPage({ viewport: { width: 1440, height: 900 } });
+const errors = [];
+page.on("console", (m) => { if (m.type() === "error") errors.push(`${page.url()}: ${m.text()}`); });
+page.on("pageerror", (e) => errors.push(`${page.url()}: ${e.message}`));
+await page.goto(BASE);
+await page.evaluate(() => { localStorage.setItem("corvo.welcome", "done"); localStorage.setItem("corvo.user", "Rahul"); });
+const shot = async (path, name, wait = 1500) => {
+  await page.goto(BASE + path);
+  await page.waitForTimeout(wait);
+  await page.screenshot({ path: `${OUT}/${name}.png`, fullPage: false });
+};
+await shot("/inbox", "01-inbox");
+const firstReq = await page.evaluate(async () => (await (await fetch("/api/requirements?route=CONTRACT_PO")).json())[0]?.id);
+const rfq = await page.evaluate(async () => (await (await fetch("/api/requirements?route=RFQ")).json())[0]?.id);
+await shot(`/requirements/${firstReq}`, "02-requirement-contract");
+await shot(`/requirements/${rfq}`, "03-requirement-rfq");
+await shot("/batches", "04-batches");
+await shot("/batches/1", "05-run");
+await shot("/policy", "06-policy");
+await shot("/policy/amendments/new", "07-amendment-new");
+await shot("/contracts", "08-contracts");
+await shot("/suppliers", "09-suppliers");
+await shot("/compare", "10-compare");
+await shot("/audit", "11-audit");
+await page.evaluate(() => localStorage.setItem("corvo.user", "Asha"));
+await shot("/chat", "12-chat");
+const po = await page.evaluate(async () => (await (await fetch("/api/purchase-orders")).json())[0]?.id);
+await shot(`/po/${po}`, "13-po");
+console.log("errors:", errors.length ? errors.join("\n") : "none");
+await browser.close();
