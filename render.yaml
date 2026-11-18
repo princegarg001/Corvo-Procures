@@ -1,0 +1,21 @@
+# Render blueprint: one Docker web service; the database is external (Neon/Supabase) so it survives redeploys.
+services:
+  - type: web
+    name: corvo-procure
+    runtime: docker
+    plan: free
+    healthCheckPath: /healthz
+    autoDeploy: true
+    buildFilter:
+      ignoredPaths:
+        - submission/**
+        - docs/**
+    envVars:
+      - key: DATABASE_URL
+        sync: false
+      - key: GEMINI_API_KEY
+        sync: false
+      - key: GROQ_API_KEY
+        sync: false
+      - key: APP_TZ
+        value: Asia/Kolkata

@@ -27,3 +27,4 @@ out.csv
 .DS_Store
 Thumbs.db
 .idea/
+frontend/tsconfig.tsbuildinfo
