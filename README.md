@@ -46,6 +46,81 @@ curl -s "$H/api/preferred-suppliers/export.csv?as_of=2026-11-19&top=3" -o prefer
 ```
 Amendment text or a document works the same way: `-d '{"text":"…"}'` or `-F file=@amendment.pdf`.
 
+## Architecture (end to end)
+```mermaid
+flowchart TB
+  subgraph Users["People"]
+    R["Requester (chat)"]
+    B["Buyer (inbox, approve, override)"]
+    P["Procurement admin (policy, contracts)"]
+  end
+
+  subgraph UI["React SPA (Vite, TypeScript, TanStack)"]
+    CHAT["Chat intake"]
+    INBOX["Inbox and requirement detail: rule ladder"]
+    POL["Policy: versions, diff, amendment review and impact"]
+    OTHER["Batches, Contracts, Suppliers, Runs compare, Audit"]
+  end
+
+  subgraph API["FastAPI (one URL, serves the SPA, OpenAPI at /docs)"]
+    ROUTES["Routers: process-batch, runs, policy, requirements, contracts, chat, audit"]
+    SVC["Services: runs, amendments, approvals, contracts, chat, live PRs"]
+  end
+
+  subgraph AI["AI at the edges only (optional)"]
+    GW["Gateway: Gemini, then Groq, then deterministic fallback"]
+    TXT["Chat to slots"]
+    AMD["Amendment text to policy ops, each with a source quote"]
+    PDFX["Contract PDF to fields (deterministic parser)"]
+  end
+
+  subgraph ENG["procure_engine (pure: no DB, no HTTP, no LLM)"]
+    direction LR
+    M["Match items"] --> C["Club lines"] --> V["Value"] --> K["Contracts and ceilings"] --> RL["Rule ladder"] --> S["Supplier, price, suggestions"] --> CO["Consolidate POs"] --> X["Explain and trace"]
+  end
+
+  POLJ[("policies/*.json: versioned policy as data")]
+  DB[("PostgreSQL: runs, decisions, POs, contracts, policy versions, audit")]
+
+  R --> CHAT
+  B --> INBOX
+  P --> POL
+  CHAT & INBOX & POL & OTHER -->|"JSON / CSV, X-User header"| ROUTES
+  ROUTES --> SVC
+  SVC --> ENG
+  POLJ -->|"loaded, validated, resolved by effective date"| ENG
+  SVC <--> DB
+  SVC -.->|"text only"| GW
+  GW --> TXT & AMD & PDFX
+  AMD -->|"validated ops, plain-language diff, impact preview, human approval"| SVC
+  ENG -->|"decisions CSV: one row per PR line"| SVC
+```
+
+AI never decides a route, price or supplier, and never invents an item code. Every AI output is validated, shown with
+its source quote, and approved by a person. Everything works with no API key.
+
+## Blind-test flow
+```mermaid
+sequenceDiagram
+  actor U as Procurement user
+  participant A as App (hosted)
+  participant E as Engine
+  participant L as LLM (optional)
+  U->>A: Upload new PR batch, pin policy v5.0
+  A->>E: Run 1 (same inputs give identical output)
+  A-->>U: run1_decisions.csv
+  U->>A: Upload amendment document
+  A->>L: Read text into policy ops with source quotes
+  L-->>A: Ops (validated, repaired once if needed)
+  A-->>U: Plain-language changes, effective date, impact on the batch
+  U->>A: Approve, new version active from its effective date
+  U->>A: Process the same batch again
+  A->>E: Run 2, each requirement uses the version in force on its date
+  A-->>U: run2_decisions.csv
+  U->>A: Preferred suppliers as of a date
+  A-->>U: preferred_suppliers.csv (top 3, Active only)
+```
+
 ## How it is built
 `backend/procure_engine` is the pure engine; `backend/app` is the API, services, AI gateway and persistence;
 `frontend` is the React UI; `policies/` holds the versioned policy; `fixtures/` the amendment drills and chat
