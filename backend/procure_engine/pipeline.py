@@ -272,6 +272,15 @@ class Engine:
             if d.decision == DECISION_PO and (not d.supplier_id or d.unit_price is None):
                 raise InvariantViolation(f"{req.id}: PO without supplier or price")
 
+    def _version_for_raw(self, raw: Mapping[str, str | None]) -> str:
+        """Version in force on the line's creation date (latest version if the date is unreadable)."""
+        from .intake import parse_datetime
+
+        try:
+            return self.resolver.for_date(parse_datetime(raw.get("created_at") or "").date()).version
+        except ValueError:
+            return self.resolver.latest.version
+
     def _rows(self, rows: Sequence[Mapping[str, str | None]], requirements: list[Requirement],
               decisions: dict[str, Decision], rejected: list[RejectedLine],
               matches: dict[int, MatchResult]) -> list[OutputRow]:
@@ -287,8 +296,9 @@ class Engine:
             if idx in rej:
                 m = matches.get(idx)
                 code = m.item_code if m else (raw.get("item_code") or "").strip()
-                out.append(OutputRow(idx, pr_no, pr_line, code, "", "", "", NOT_PROCESSED, "", "", "", "", "",
-                                     f"Not processed: {rej[idx].reason}"))
+                version = self._version_for_raw(raw)
+                out.append(OutputRow(idx, pr_no, pr_line, code, "", "", "", NOT_PROCESSED, "", "", "", "", version,
+                                     f"Policy v{version}: not processed - {rej[idx].reason}"))
                 continue
             req, d = by_row[idx]
             is_po = d.decision == DECISION_PO
