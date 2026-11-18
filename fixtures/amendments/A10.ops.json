@@ -1,0 +1,52 @@
+{
+  "id": "A10",
+  "title": "Need-by within 3 days counts as emergency",
+  "ops": [
+    {
+      "op": "add_param",
+      "name": "emergency_lead_time_days",
+      "value": 3,
+      "unit": "days",
+      "label": "Short lead time counts as emergency",
+      "clause": "5.3B"
+    },
+    {
+      "op": "add_rule",
+      "before": "R-5.3",
+      "rule": {
+        "id": "R-5.3B",
+        "clause": "5.3B",
+        "name": "Short lead time → emergency PO",
+        "when": {
+          "all": [
+            {
+              "fact": "req.lead_time_days",
+              "op": "lte",
+              "param": "emergency_lead_time_days"
+            },
+            {
+              "fact": "req.value",
+              "op": "lte",
+              "param": "emergency_limit"
+            },
+            {
+              "fact": "history.bought_from_active",
+              "op": "eq",
+              "value": true
+            }
+          ]
+        },
+        "then": {
+          "decision": "PO",
+          "route": "EMERGENCY_PO",
+          "supplier": "preferred:1",
+          "price": "reference_price"
+        }
+      }
+    },
+    {
+      "op": "set_effective_from",
+      "date": "2026-11-01"
+    }
+  ]
+}

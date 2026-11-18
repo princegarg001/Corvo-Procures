@@ -1,0 +1,19 @@
+{
+  "id": "A11",
+  "title": "RFQ suggests 4 suppliers",
+  "ops": [
+    {
+      "op": "modify_rule",
+      "rule_id": "R-5.5",
+      "changes": {
+        "then": {
+          "suggest": 4
+        }
+      }
+    },
+    {
+      "op": "set_effective_from",
+      "date": "2026-11-01"
+    }
+  ]
+}

@@ -1,0 +1,46 @@
+{
+  "id": "A6",
+  "title": "Services above ₹5 L need an RFP",
+  "ops": [
+    {
+      "op": "add_param",
+      "name": "service_rfp_limit",
+      "value": 500000,
+      "unit": "INR",
+      "label": "Service RFP threshold",
+      "clause": "5.5A"
+    },
+    {
+      "op": "add_rule",
+      "after": "R-5.2",
+      "rule": {
+        "id": "R-5.5A",
+        "clause": "5.5A",
+        "name": "Services above limit → RFP",
+        "when": {
+          "all": [
+            {
+              "fact": "item.type",
+              "op": "eq",
+              "value": "Service"
+            },
+            {
+              "fact": "req.value",
+              "op": "gt",
+              "param": "service_rfp_limit"
+            }
+          ]
+        },
+        "then": {
+          "decision": "SOURCING_REQUEST",
+          "route": "RFP",
+          "suggest": 5
+        }
+      }
+    },
+    {
+      "op": "set_effective_from",
+      "date": "2026-11-01"
+    }
+  ]
+}

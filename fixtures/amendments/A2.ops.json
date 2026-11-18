@@ -1,0 +1,57 @@
+{
+  "id": "A2",
+  "title": "Chakan-only emergency limit ₹7.5 L",
+  "ops": [
+    {
+      "op": "add_param",
+      "name": "chk1_emergency_limit",
+      "value": 750000,
+      "unit": "INR",
+      "label": "Emergency PO limit (Chakan)",
+      "clause": "5.3A"
+    },
+    {
+      "op": "add_rule",
+      "before": "R-5.3",
+      "rule": {
+        "id": "R-5.3A",
+        "clause": "5.3A",
+        "name": "Emergency PO (Chakan)",
+        "when": {
+          "all": [
+            {
+              "fact": "req.plant",
+              "op": "eq",
+              "value": "CHK1"
+            },
+            {
+              "fact": "req.emergency",
+              "op": "eq",
+              "value": true
+            },
+            {
+              "fact": "req.value",
+              "op": "lte",
+              "param": "chk1_emergency_limit"
+            },
+            {
+              "fact": "history.bought_from_active",
+              "op": "eq",
+              "value": true
+            }
+          ]
+        },
+        "then": {
+          "decision": "PO",
+          "route": "EMERGENCY_PO",
+          "supplier": "preferred:1",
+          "price": "reference_price"
+        }
+      }
+    },
+    {
+      "op": "set_effective_from",
+      "date": "2026-11-01"
+    }
+  ]
+}

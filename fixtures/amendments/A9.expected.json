@@ -1,0 +1,425 @@
+{
+  "policy_id": "CORVO-PROC-POL-04",
+  "version": "5.1",
+  "effective_from": "2026-11-01",
+  "title": "Corvo Engineering Procurement Policy: PR to PO",
+  "params": {
+    "club_created_within_days": {
+      "value": 14,
+      "unit": "days",
+      "label": "Clubbing window (creation)",
+      "clause": "2.2"
+    },
+    "club_need_by_within_days": {
+      "value": 7,
+      "unit": "days",
+      "label": "Clubbing window (need-by)",
+      "clause": "2.2"
+    },
+    "last_po_lookback_days": {
+      "value": 365,
+      "unit": "days",
+      "label": "Valuation PO lookback",
+      "clause": "3.1"
+    },
+    "bought_lookback_days": {
+      "value": 365,
+      "unit": "days",
+      "label": "Purchase-history lookback",
+      "clause": "5.3"
+    },
+    "emergency_limit": {
+      "value": 500000,
+      "unit": "INR",
+      "label": "Emergency PO limit",
+      "clause": "5.3"
+    },
+    "spot_limit": {
+      "value": 200000,
+      "unit": "INR",
+      "label": "Spot PO limit",
+      "clause": "5.4"
+    },
+    "rfq_limit": {
+      "value": 1000000,
+      "unit": "INR",
+      "label": "RFQ / RFP boundary",
+      "clause": "5.5"
+    },
+    "preferred_lookback_days": {
+      "value": 548,
+      "unit": "days",
+      "label": "Preferred-list lookback",
+      "clause": "6.1"
+    },
+    "po_consolidation_hours": {
+      "value": 24,
+      "unit": "hours",
+      "label": "PO consolidation window",
+      "clause": "7.1"
+    },
+    "contract_ceiling_tolerance_pct": {
+      "value": 0,
+      "unit": "%",
+      "label": "Contract ceiling tolerance",
+      "clause": "4.2"
+    }
+  },
+  "requirement": {
+    "emergency_urgencies": [
+      "Emergency"
+    ]
+  },
+  "matching": {
+    "clause": "1.1",
+    "threshold": 0.6,
+    "numeric_guard": true,
+    "replacements": [
+      {
+        "find": "\"",
+        "replace": " inch"
+      }
+    ],
+    "noise_phrases": [
+      {
+        "pattern": "- urgent",
+        "flag": "URGENT_IN_TEXT"
+      },
+      {
+        "pattern": "(repeat)",
+        "flag": "REPEAT_IN_TEXT"
+      },
+      {
+        "pattern": "as per sample",
+        "flag": "SAMPLE_REFERENCED"
+      },
+      {
+        "pattern": "for maintenance",
+        "flag": null
+      }
+    ],
+    "abbreviations": {
+      "brg": "bearing",
+      "hyd": "hydraulic",
+      "pneu": "pneumatic",
+      "rod": "electrode"
+    }
+  },
+  "supplier_eligibility": {
+    "clause": "5.7",
+    "allowed_statuses": [
+      "Active"
+    ],
+    "overrides": []
+  },
+  "item_sets": {},
+  "clubbing": {
+    "clause": "2.2",
+    "enabled": true,
+    "key": [
+      "item_code",
+      "plant"
+    ],
+    "anchor": "first_line",
+    "join": "earliest",
+    "created_within_param": "club_created_within_days",
+    "need_by_within_param": "club_need_by_within_days",
+    "never_club_when": {
+      "fact": "item.is_new",
+      "op": "eq",
+      "value": true,
+      "param": null
+    }
+  },
+  "valuation": {
+    "clause": "3.1",
+    "sources": [
+      "contract_rate",
+      "last_po_price",
+      "standard_price"
+    ],
+    "last_po_lookback_param": "last_po_lookback_days",
+    "new_item": "requester_estimate"
+  },
+  "contracts": {
+    "clause": "4.2",
+    "selection": "lowest_rate_with_ceiling",
+    "consume_order": "requirement_date",
+    "tolerance_param": "contract_ceiling_tolerance_pct"
+  },
+  "preferred_suppliers": {
+    "clause": "6.2",
+    "lookback_param": "preferred_lookback_days",
+    "include_contract_holders": true,
+    "weights": {
+      "frequency": 0.3,
+      "recency": 0.25,
+      "contract": 0.2,
+      "on_time": 0.15,
+      "quality": 0.1
+    },
+    "frequency": "relative_to_max",
+    "recency_bands": [
+      {
+        "within_days": 90,
+        "score": 1
+      },
+      {
+        "within_days": 365,
+        "score": 0.5
+      }
+    ],
+    "rating_scales": {
+      "on_time_pct": 100,
+      "quality_rating": 5
+    },
+    "tie_breakers": [
+      "last_po_date_desc",
+      "supplier_id_asc"
+    ],
+    "reference_price": [
+      "latest_po_in_window",
+      "latest_contract_rate"
+    ],
+    "export_top": 3
+  },
+  "suggestions": {
+    "clause": "6.4",
+    "topup": "category_by_delivery_quality",
+    "topup_weights": {
+      "on_time": 1,
+      "quality": 1
+    },
+    "new_item": "none"
+  },
+  "consolidation": {
+    "clause": "7.1",
+    "enabled": true,
+    "key": [
+      "supplier_id",
+      "plant",
+      "route"
+    ],
+    "anchor": "first_requirement",
+    "join": "earliest",
+    "window_param": "po_consolidation_hours",
+    "exclude_routes": [
+      "EMERGENCY_PO"
+    ]
+  },
+  "review_flags": {
+    "possible_duplicate_minutes": 60,
+    "description_mismatch_below": 0.3
+  },
+  "routes": {
+    "CONTRACT_PO": {
+      "label": "Contract PO",
+      "description": ""
+    },
+    "EMERGENCY_PO": {
+      "label": "Emergency PO",
+      "description": ""
+    },
+    "SPOT_PO": {
+      "label": "Spot PO",
+      "description": ""
+    },
+    "RFQ": {
+      "label": "Request for quotation",
+      "description": ""
+    },
+    "RFP": {
+      "label": "Request for proposal",
+      "description": ""
+    },
+    "CAPEX_SOURCING": {
+      "label": "Capex sourcing",
+      "description": ""
+    },
+    "NEW_ITEM_SOURCING": {
+      "label": "New-item sourcing",
+      "description": ""
+    }
+  },
+  "rules": [
+    {
+      "id": "R-1.2",
+      "clause": "1.2",
+      "name": "New item → sourcing",
+      "description": "",
+      "enabled": true,
+      "when": {
+        "fact": "item.is_new",
+        "op": "eq",
+        "value": true,
+        "param": null
+      },
+      "then": {
+        "decision": "SOURCING_REQUEST",
+        "route": "NEW_ITEM_SOURCING",
+        "supplier": null,
+        "price": null,
+        "suggest": 0,
+        "flags": [],
+        "requires_approval": []
+      }
+    },
+    {
+      "id": "R-5.1",
+      "clause": "5.1",
+      "name": "Capex → sourcing",
+      "description": "",
+      "enabled": true,
+      "when": {
+        "fact": "item.type",
+        "op": "eq",
+        "value": "Capex",
+        "param": null
+      },
+      "then": {
+        "decision": "SOURCING_REQUEST",
+        "route": "CAPEX_SOURCING",
+        "supplier": null,
+        "price": null,
+        "suggest": 5,
+        "flags": [
+          "CAPEX_APPROVAL"
+        ],
+        "requires_approval": []
+      }
+    },
+    {
+      "id": "R-5.2",
+      "clause": "5.2",
+      "name": "Rate contract",
+      "description": "",
+      "enabled": true,
+      "when": {
+        "fact": "contract.usable",
+        "op": "eq",
+        "value": true,
+        "param": null
+      },
+      "then": {
+        "decision": "PO",
+        "route": "CONTRACT_PO",
+        "supplier": "contract",
+        "price": "contract_rate",
+        "suggest": 0,
+        "flags": [],
+        "requires_approval": []
+      }
+    },
+    {
+      "id": "R-5.3",
+      "clause": "5.3",
+      "name": "Emergency PO",
+      "description": "",
+      "enabled": true,
+      "when": {
+        "all": [
+          {
+            "fact": "req.emergency",
+            "op": "eq",
+            "value": true,
+            "param": null
+          },
+          {
+            "fact": "req.value",
+            "op": "lte",
+            "value": null,
+            "param": "emergency_limit"
+          },
+          {
+            "fact": "history.bought_from_active",
+            "op": "eq",
+            "value": true,
+            "param": null
+          }
+        ]
+      },
+      "then": {
+        "decision": "PO",
+        "route": "EMERGENCY_PO",
+        "supplier": "preferred:1",
+        "price": "reference_price",
+        "suggest": 0,
+        "flags": [],
+        "requires_approval": []
+      }
+    },
+    {
+      "id": "R-5.4",
+      "clause": "5.4",
+      "name": "Spot PO",
+      "description": "",
+      "enabled": true,
+      "when": {
+        "all": [
+          {
+            "fact": "req.value",
+            "op": "lt",
+            "value": null,
+            "param": "spot_limit"
+          },
+          {
+            "fact": "history.bought_from_active",
+            "op": "eq",
+            "value": true,
+            "param": null
+          }
+        ]
+      },
+      "then": {
+        "decision": "PO",
+        "route": "SPOT_PO",
+        "supplier": "preferred:1",
+        "price": "reference_price",
+        "suggest": 0,
+        "flags": [],
+        "requires_approval": []
+      }
+    },
+    {
+      "id": "R-5.5",
+      "clause": "5.5",
+      "name": "RFQ",
+      "description": "",
+      "enabled": true,
+      "when": {
+        "fact": "req.value",
+        "op": "lt",
+        "value": null,
+        "param": "rfq_limit"
+      },
+      "then": {
+        "decision": "SOURCING_REQUEST",
+        "route": "RFQ",
+        "supplier": null,
+        "price": null,
+        "suggest": 3,
+        "flags": [],
+        "requires_approval": []
+      }
+    },
+    {
+      "id": "R-5.6",
+      "clause": "5.6",
+      "name": "RFP",
+      "description": "",
+      "enabled": true,
+      "when": {
+        "always": true
+      },
+      "then": {
+        "decision": "SOURCING_REQUEST",
+        "route": "RFP",
+        "supplier": null,
+        "price": null,
+        "suggest": 5,
+        "flags": [],
+        "requires_approval": []
+      }
+    }
+  ]
+}

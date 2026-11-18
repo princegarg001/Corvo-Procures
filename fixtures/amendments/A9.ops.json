@@ -1,0 +1,18 @@
+{
+  "id": "A9",
+  "title": "Emergency POs are not consolidated",
+  "ops": [
+    {
+      "op": "set_consolidation",
+      "changes": {
+        "exclude_routes": [
+          "EMERGENCY_PO"
+        ]
+      }
+    },
+    {
+      "op": "set_effective_from",
+      "date": "2026-11-01"
+    }
+  ]
+}

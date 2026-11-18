@@ -1,0 +1,22 @@
+{
+  "id": "A12",
+  "title": "Ranking gives more weight to quality",
+  "ops": [
+    {
+      "op": "set_ranking",
+      "changes": {
+        "weights": {
+          "frequency": 0.25,
+          "recency": 0.2,
+          "contract": 0.2,
+          "on_time": 0.15,
+          "quality": 0.2
+        }
+      }
+    },
+    {
+      "op": "set_effective_from",
+      "date": "2026-11-01"
+    }
+  ]
+}

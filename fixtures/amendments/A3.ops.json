@@ -1,0 +1,29 @@
+{
+  "id": "A3",
+  "title": "Office & IT always RFQ",
+  "ops": [
+    {
+      "op": "add_rule",
+      "after": "R-5.2",
+      "rule": {
+        "id": "R-5.2A",
+        "clause": "5.2A",
+        "name": "Office & IT → RFQ",
+        "when": {
+          "fact": "item.category",
+          "op": "eq",
+          "value": "Office & IT"
+        },
+        "then": {
+          "decision": "SOURCING_REQUEST",
+          "route": "RFQ",
+          "suggest": 3
+        }
+      }
+    },
+    {
+      "op": "set_effective_from",
+      "date": "2026-11-01"
+    }
+  ]
+}

@@ -1,0 +1,17 @@
+{
+  "id": "A7",
+  "title": "Supplier S013 blocked from 10 Nov",
+  "ops": [
+    {
+      "op": "set_supplier_override",
+      "supplier_id": "S013",
+      "status": "Blocked",
+      "reason": "quality hold",
+      "effective_from": "2026-11-10"
+    },
+    {
+      "op": "set_effective_from",
+      "date": "2026-11-01"
+    }
+  ]
+}

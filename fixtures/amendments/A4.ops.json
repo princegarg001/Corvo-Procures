@@ -1,0 +1,50 @@
+{
+  "id": "A4",
+  "title": "Proprietary OEM items → PROPRIETARY_PO",
+  "ops": [
+    {
+      "op": "add_item_set",
+      "name": "oem_proprietary",
+      "set": {
+        "label": "Proprietary OEM items",
+        "patterns": [
+          "\\(vertex",
+          "\\(hydrax"
+        ]
+      }
+    },
+    {
+      "op": "add_rule",
+      "after": "R-5.2",
+      "rule": {
+        "id": "R-5.2B",
+        "clause": "5.2B",
+        "name": "Proprietary OEM item → OEM",
+        "when": {
+          "all": [
+            {
+              "fact": "item.in_set(oem_proprietary)",
+              "op": "eq",
+              "value": true
+            },
+            {
+              "fact": "history.bought_from_active",
+              "op": "eq",
+              "value": true
+            }
+          ]
+        },
+        "then": {
+          "decision": "PO",
+          "route": "PROPRIETARY_PO",
+          "supplier": "preferred:1",
+          "price": "reference_price"
+        }
+      }
+    },
+    {
+      "op": "set_effective_from",
+      "date": "2026-11-01"
+    }
+  ]
+}

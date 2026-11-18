@@ -1,0 +1,15 @@
+{
+  "id": "A8",
+  "title": "Contracts usable to 110% of ceiling",
+  "ops": [
+    {
+      "op": "set_param",
+      "name": "contract_ceiling_tolerance_pct",
+      "value": 10
+    },
+    {
+      "op": "set_effective_from",
+      "date": "2026-11-01"
+    }
+  ]
+}

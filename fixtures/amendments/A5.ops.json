@@ -1,0 +1,15 @@
+{
+  "id": "A5",
+  "title": "Clubbing window 14 → 30 days",
+  "ops": [
+    {
+      "op": "set_param",
+      "name": "club_created_within_days",
+      "value": 30
+    },
+    {
+      "op": "set_effective_from",
+      "date": "2026-11-01"
+    }
+  ]
+}

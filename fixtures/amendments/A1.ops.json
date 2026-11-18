@@ -1,0 +1,17 @@
+{
+  "id": "A1",
+  "title": "Spot limit ₹2 L → ₹3 L from 10 Nov",
+  "ops": [
+    {
+      "op": "set_param",
+      "name": "spot_limit",
+      "value": 300000,
+      "source_quote": "The Spot PO limit in clause 5.4 is raised from ₹2,00,000 to ₹3,00,000."
+    },
+    {
+      "op": "set_effective_from",
+      "date": "2026-11-10",
+      "source_quote": "effective 10 November 2026"
+    }
+  ]
+}
