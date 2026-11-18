@@ -1,0 +1,644 @@
+{
+  "$defs": {
+    "AddItemSet": {
+      "additionalProperties": false,
+      "properties": {
+        "source_quote": {
+          "default": "",
+          "title": "Source Quote",
+          "type": "string"
+        },
+        "note": {
+          "default": "",
+          "title": "Note",
+          "type": "string"
+        },
+        "op": {
+          "const": "add_item_set",
+          "title": "Op",
+          "type": "string"
+        },
+        "name": {
+          "pattern": "^[a-z][a-z0-9_]*$",
+          "title": "Name",
+          "type": "string"
+        },
+        "set": {
+          "additionalProperties": true,
+          "title": "Set",
+          "type": "object"
+        }
+      },
+      "required": [
+        "op",
+        "name",
+        "set"
+      ],
+      "title": "AddItemSet",
+      "type": "object"
+    },
+    "AddParam": {
+      "additionalProperties": false,
+      "properties": {
+        "source_quote": {
+          "default": "",
+          "title": "Source Quote",
+          "type": "string"
+        },
+        "note": {
+          "default": "",
+          "title": "Note",
+          "type": "string"
+        },
+        "op": {
+          "const": "add_param",
+          "title": "Op",
+          "type": "string"
+        },
+        "name": {
+          "pattern": "^[a-z][a-z0-9_]*$",
+          "title": "Name",
+          "type": "string"
+        },
+        "value": {
+          "title": "Value"
+        },
+        "unit": {
+          "default": "",
+          "title": "Unit",
+          "type": "string"
+        },
+        "label": {
+          "default": "",
+          "title": "Label",
+          "type": "string"
+        },
+        "clause": {
+          "default": "",
+          "title": "Clause",
+          "type": "string"
+        }
+      },
+      "required": [
+        "op",
+        "name",
+        "value"
+      ],
+      "title": "AddParam",
+      "type": "object"
+    },
+    "AddRule": {
+      "additionalProperties": false,
+      "properties": {
+        "source_quote": {
+          "default": "",
+          "title": "Source Quote",
+          "type": "string"
+        },
+        "note": {
+          "default": "",
+          "title": "Note",
+          "type": "string"
+        },
+        "op": {
+          "const": "add_rule",
+          "title": "Op",
+          "type": "string"
+        },
+        "rule": {
+          "additionalProperties": true,
+          "title": "Rule",
+          "type": "object"
+        },
+        "before": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Before"
+        },
+        "after": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "After"
+        },
+        "index": {
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Index"
+        }
+      },
+      "required": [
+        "op",
+        "rule"
+      ],
+      "title": "AddRule",
+      "type": "object"
+    },
+    "ModifyRule": {
+      "additionalProperties": false,
+      "properties": {
+        "source_quote": {
+          "default": "",
+          "title": "Source Quote",
+          "type": "string"
+        },
+        "note": {
+          "default": "",
+          "title": "Note",
+          "type": "string"
+        },
+        "op": {
+          "const": "modify_rule",
+          "title": "Op",
+          "type": "string"
+        },
+        "rule_id": {
+          "title": "Rule Id",
+          "type": "string"
+        },
+        "changes": {
+          "additionalProperties": true,
+          "title": "Changes",
+          "type": "object"
+        }
+      },
+      "required": [
+        "op",
+        "rule_id",
+        "changes"
+      ],
+      "title": "ModifyRule",
+      "type": "object"
+    },
+    "RemoveRule": {
+      "additionalProperties": false,
+      "properties": {
+        "source_quote": {
+          "default": "",
+          "title": "Source Quote",
+          "type": "string"
+        },
+        "note": {
+          "default": "",
+          "title": "Note",
+          "type": "string"
+        },
+        "op": {
+          "const": "remove_rule",
+          "title": "Op",
+          "type": "string"
+        },
+        "rule_id": {
+          "title": "Rule Id",
+          "type": "string"
+        }
+      },
+      "required": [
+        "op",
+        "rule_id"
+      ],
+      "title": "RemoveRule",
+      "type": "object"
+    },
+    "ReorderRules": {
+      "additionalProperties": false,
+      "properties": {
+        "source_quote": {
+          "default": "",
+          "title": "Source Quote",
+          "type": "string"
+        },
+        "note": {
+          "default": "",
+          "title": "Note",
+          "type": "string"
+        },
+        "op": {
+          "const": "reorder_rules",
+          "title": "Op",
+          "type": "string"
+        },
+        "order": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Order",
+          "type": "array"
+        }
+      },
+      "required": [
+        "op",
+        "order"
+      ],
+      "title": "ReorderRules",
+      "type": "object"
+    },
+    "SetClubbing": {
+      "additionalProperties": false,
+      "properties": {
+        "source_quote": {
+          "default": "",
+          "title": "Source Quote",
+          "type": "string"
+        },
+        "note": {
+          "default": "",
+          "title": "Note",
+          "type": "string"
+        },
+        "op": {
+          "const": "set_clubbing",
+          "title": "Op",
+          "type": "string"
+        },
+        "changes": {
+          "additionalProperties": true,
+          "title": "Changes",
+          "type": "object"
+        }
+      },
+      "required": [
+        "op",
+        "changes"
+      ],
+      "title": "SetClubbing",
+      "type": "object"
+    },
+    "SetConsolidation": {
+      "additionalProperties": false,
+      "properties": {
+        "source_quote": {
+          "default": "",
+          "title": "Source Quote",
+          "type": "string"
+        },
+        "note": {
+          "default": "",
+          "title": "Note",
+          "type": "string"
+        },
+        "op": {
+          "const": "set_consolidation",
+          "title": "Op",
+          "type": "string"
+        },
+        "changes": {
+          "additionalProperties": true,
+          "title": "Changes",
+          "type": "object"
+        }
+      },
+      "required": [
+        "op",
+        "changes"
+      ],
+      "title": "SetConsolidation",
+      "type": "object"
+    },
+    "SetEffectiveFrom": {
+      "additionalProperties": false,
+      "properties": {
+        "source_quote": {
+          "default": "",
+          "title": "Source Quote",
+          "type": "string"
+        },
+        "note": {
+          "default": "",
+          "title": "Note",
+          "type": "string"
+        },
+        "op": {
+          "const": "set_effective_from",
+          "title": "Op",
+          "type": "string"
+        },
+        "date": {
+          "format": "date",
+          "title": "Date",
+          "type": "string"
+        }
+      },
+      "required": [
+        "op",
+        "date"
+      ],
+      "title": "SetEffectiveFrom",
+      "type": "object"
+    },
+    "SetMatching": {
+      "additionalProperties": false,
+      "properties": {
+        "source_quote": {
+          "default": "",
+          "title": "Source Quote",
+          "type": "string"
+        },
+        "note": {
+          "default": "",
+          "title": "Note",
+          "type": "string"
+        },
+        "op": {
+          "const": "set_matching",
+          "title": "Op",
+          "type": "string"
+        },
+        "changes": {
+          "additionalProperties": true,
+          "title": "Changes",
+          "type": "object"
+        }
+      },
+      "required": [
+        "op",
+        "changes"
+      ],
+      "title": "SetMatching",
+      "type": "object"
+    },
+    "SetParam": {
+      "additionalProperties": false,
+      "properties": {
+        "source_quote": {
+          "default": "",
+          "title": "Source Quote",
+          "type": "string"
+        },
+        "note": {
+          "default": "",
+          "title": "Note",
+          "type": "string"
+        },
+        "op": {
+          "const": "set_param",
+          "title": "Op",
+          "type": "string"
+        },
+        "name": {
+          "title": "Name",
+          "type": "string"
+        },
+        "value": {
+          "title": "Value"
+        }
+      },
+      "required": [
+        "op",
+        "name",
+        "value"
+      ],
+      "title": "SetParam",
+      "type": "object"
+    },
+    "SetRanking": {
+      "additionalProperties": false,
+      "properties": {
+        "source_quote": {
+          "default": "",
+          "title": "Source Quote",
+          "type": "string"
+        },
+        "note": {
+          "default": "",
+          "title": "Note",
+          "type": "string"
+        },
+        "op": {
+          "const": "set_ranking",
+          "title": "Op",
+          "type": "string"
+        },
+        "changes": {
+          "additionalProperties": true,
+          "title": "Changes",
+          "type": "object"
+        }
+      },
+      "required": [
+        "op",
+        "changes"
+      ],
+      "title": "SetRanking",
+      "type": "object"
+    },
+    "SetRequirement": {
+      "additionalProperties": false,
+      "properties": {
+        "source_quote": {
+          "default": "",
+          "title": "Source Quote",
+          "type": "string"
+        },
+        "note": {
+          "default": "",
+          "title": "Note",
+          "type": "string"
+        },
+        "op": {
+          "const": "set_requirement",
+          "title": "Op",
+          "type": "string"
+        },
+        "changes": {
+          "additionalProperties": true,
+          "title": "Changes",
+          "type": "object"
+        }
+      },
+      "required": [
+        "op",
+        "changes"
+      ],
+      "title": "SetRequirement",
+      "type": "object"
+    },
+    "SetSuggestions": {
+      "additionalProperties": false,
+      "properties": {
+        "source_quote": {
+          "default": "",
+          "title": "Source Quote",
+          "type": "string"
+        },
+        "note": {
+          "default": "",
+          "title": "Note",
+          "type": "string"
+        },
+        "op": {
+          "const": "set_suggestions",
+          "title": "Op",
+          "type": "string"
+        },
+        "changes": {
+          "additionalProperties": true,
+          "title": "Changes",
+          "type": "object"
+        }
+      },
+      "required": [
+        "op",
+        "changes"
+      ],
+      "title": "SetSuggestions",
+      "type": "object"
+    },
+    "SetSupplierOverride": {
+      "additionalProperties": false,
+      "properties": {
+        "source_quote": {
+          "default": "",
+          "title": "Source Quote",
+          "type": "string"
+        },
+        "note": {
+          "default": "",
+          "title": "Note",
+          "type": "string"
+        },
+        "op": {
+          "const": "set_supplier_override",
+          "title": "Op",
+          "type": "string"
+        },
+        "supplier_id": {
+          "title": "Supplier Id",
+          "type": "string"
+        },
+        "status": {
+          "title": "Status",
+          "type": "string"
+        },
+        "reason": {
+          "default": "",
+          "title": "Reason",
+          "type": "string"
+        },
+        "effective_from": {
+          "anyOf": [
+            {
+              "format": "date",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Effective From"
+        },
+        "effective_to": {
+          "anyOf": [
+            {
+              "format": "date",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Effective To"
+        }
+      },
+      "required": [
+        "op",
+        "supplier_id",
+        "status"
+      ],
+      "title": "SetSupplierOverride",
+      "type": "object"
+    }
+  },
+  "items": {
+    "discriminator": {
+      "mapping": {
+        "add_item_set": "#/$defs/AddItemSet",
+        "add_param": "#/$defs/AddParam",
+        "add_rule": "#/$defs/AddRule",
+        "modify_rule": "#/$defs/ModifyRule",
+        "remove_rule": "#/$defs/RemoveRule",
+        "reorder_rules": "#/$defs/ReorderRules",
+        "set_clubbing": "#/$defs/SetClubbing",
+        "set_consolidation": "#/$defs/SetConsolidation",
+        "set_effective_from": "#/$defs/SetEffectiveFrom",
+        "set_matching": "#/$defs/SetMatching",
+        "set_param": "#/$defs/SetParam",
+        "set_ranking": "#/$defs/SetRanking",
+        "set_requirement": "#/$defs/SetRequirement",
+        "set_suggestions": "#/$defs/SetSuggestions",
+        "set_supplier_override": "#/$defs/SetSupplierOverride"
+      },
+      "propertyName": "op"
+    },
+    "oneOf": [
+      {
+        "$ref": "#/$defs/SetParam"
+      },
+      {
+        "$ref": "#/$defs/AddParam"
+      },
+      {
+        "$ref": "#/$defs/AddRule"
+      },
+      {
+        "$ref": "#/$defs/ModifyRule"
+      },
+      {
+        "$ref": "#/$defs/RemoveRule"
+      },
+      {
+        "$ref": "#/$defs/ReorderRules"
+      },
+      {
+        "$ref": "#/$defs/AddItemSet"
+      },
+      {
+        "$ref": "#/$defs/SetSupplierOverride"
+      },
+      {
+        "$ref": "#/$defs/SetRanking"
+      },
+      {
+        "$ref": "#/$defs/SetConsolidation"
+      },
+      {
+        "$ref": "#/$defs/SetClubbing"
+      },
+      {
+        "$ref": "#/$defs/SetSuggestions"
+      },
+      {
+        "$ref": "#/$defs/SetMatching"
+      },
+      {
+        "$ref": "#/$defs/SetRequirement"
+      },
+      {
+        "$ref": "#/$defs/SetEffectiveFrom"
+      }
+    ]
+  },
+  "type": "array"
+}

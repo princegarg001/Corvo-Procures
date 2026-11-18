@@ -1,0 +1,1204 @@
+{
+  "$defs": {
+    "AllOf": {
+      "additionalProperties": false,
+      "properties": {
+        "all": {
+          "items": {
+            "oneOf": [
+              {
+                "$ref": "#/$defs/Leaf"
+              },
+              {
+                "$ref": "#/$defs/AllOf"
+              },
+              {
+                "$ref": "#/$defs/AnyOf"
+              },
+              {
+                "$ref": "#/$defs/NotOf"
+              },
+              {
+                "$ref": "#/$defs/Always"
+              }
+            ]
+          },
+          "minItems": 1,
+          "title": "All",
+          "type": "array"
+        }
+      },
+      "required": [
+        "all"
+      ],
+      "title": "AllOf",
+      "type": "object"
+    },
+    "Always": {
+      "additionalProperties": false,
+      "properties": {
+        "always": {
+          "const": true,
+          "title": "Always",
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "always"
+      ],
+      "title": "Always",
+      "type": "object"
+    },
+    "AnyOf": {
+      "additionalProperties": false,
+      "properties": {
+        "any": {
+          "items": {
+            "oneOf": [
+              {
+                "$ref": "#/$defs/Leaf"
+              },
+              {
+                "$ref": "#/$defs/AllOf"
+              },
+              {
+                "$ref": "#/$defs/AnyOf"
+              },
+              {
+                "$ref": "#/$defs/NotOf"
+              },
+              {
+                "$ref": "#/$defs/Always"
+              }
+            ]
+          },
+          "minItems": 1,
+          "title": "Any",
+          "type": "array"
+        }
+      },
+      "required": [
+        "any"
+      ],
+      "title": "AnyOf",
+      "type": "object"
+    },
+    "ClubbingSection": {
+      "additionalProperties": false,
+      "properties": {
+        "clause": {
+          "default": "",
+          "title": "Clause",
+          "type": "string"
+        },
+        "enabled": {
+          "default": true,
+          "title": "Enabled",
+          "type": "boolean"
+        },
+        "key": {
+          "items": {
+            "enum": [
+              "item_code",
+              "plant",
+              "department",
+              "requester"
+            ],
+            "type": "string"
+          },
+          "minItems": 1,
+          "title": "Key",
+          "type": "array"
+        },
+        "anchor": {
+          "const": "first_line",
+          "default": "first_line",
+          "title": "Anchor",
+          "type": "string"
+        },
+        "join": {
+          "const": "earliest",
+          "default": "earliest",
+          "title": "Join",
+          "type": "string"
+        },
+        "created_within_param": {
+          "title": "Created Within Param",
+          "type": "string"
+        },
+        "need_by_within_param": {
+          "title": "Need By Within Param",
+          "type": "string"
+        },
+        "never_club_when": {
+          "anyOf": [
+            {
+              "oneOf": [
+                {
+                  "$ref": "#/$defs/Leaf"
+                },
+                {
+                  "$ref": "#/$defs/AllOf"
+                },
+                {
+                  "$ref": "#/$defs/AnyOf"
+                },
+                {
+                  "$ref": "#/$defs/NotOf"
+                },
+                {
+                  "$ref": "#/$defs/Always"
+                }
+              ]
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Never Club When"
+        }
+      },
+      "required": [
+        "key",
+        "created_within_param",
+        "need_by_within_param"
+      ],
+      "title": "ClubbingSection",
+      "type": "object"
+    },
+    "ConsolidationSection": {
+      "additionalProperties": false,
+      "properties": {
+        "clause": {
+          "default": "",
+          "title": "Clause",
+          "type": "string"
+        },
+        "enabled": {
+          "default": true,
+          "title": "Enabled",
+          "type": "boolean"
+        },
+        "key": {
+          "items": {
+            "enum": [
+              "supplier_id",
+              "plant",
+              "route"
+            ],
+            "type": "string"
+          },
+          "minItems": 1,
+          "title": "Key",
+          "type": "array"
+        },
+        "anchor": {
+          "const": "first_requirement",
+          "default": "first_requirement",
+          "title": "Anchor",
+          "type": "string"
+        },
+        "join": {
+          "const": "earliest",
+          "default": "earliest",
+          "title": "Join",
+          "type": "string"
+        },
+        "window_param": {
+          "title": "Window Param",
+          "type": "string"
+        },
+        "exclude_routes": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Exclude Routes",
+          "type": "array"
+        }
+      },
+      "required": [
+        "key",
+        "window_param"
+      ],
+      "title": "ConsolidationSection",
+      "type": "object"
+    },
+    "ContractsSection": {
+      "additionalProperties": false,
+      "properties": {
+        "clause": {
+          "default": "",
+          "title": "Clause",
+          "type": "string"
+        },
+        "selection": {
+          "const": "lowest_rate_with_ceiling",
+          "default": "lowest_rate_with_ceiling",
+          "title": "Selection",
+          "type": "string"
+        },
+        "consume_order": {
+          "const": "requirement_date",
+          "default": "requirement_date",
+          "title": "Consume Order",
+          "type": "string"
+        },
+        "tolerance_param": {
+          "title": "Tolerance Param",
+          "type": "string"
+        }
+      },
+      "required": [
+        "tolerance_param"
+      ],
+      "title": "ContractsSection",
+      "type": "object"
+    },
+    "ItemSet": {
+      "additionalProperties": false,
+      "properties": {
+        "label": {
+          "default": "",
+          "title": "Label",
+          "type": "string"
+        },
+        "codes": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Codes",
+          "type": "array"
+        },
+        "patterns": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Patterns",
+          "type": "array"
+        },
+        "categories": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Categories",
+          "type": "array"
+        },
+        "suppliers": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Suppliers",
+          "type": "array"
+        }
+      },
+      "title": "ItemSet",
+      "type": "object"
+    },
+    "Leaf": {
+      "additionalProperties": false,
+      "properties": {
+        "fact": {
+          "title": "Fact",
+          "type": "string"
+        },
+        "op": {
+          "enum": [
+            "eq",
+            "ne",
+            "in",
+            "not_in",
+            "lt",
+            "lte",
+            "gt",
+            "gte",
+            "between",
+            "contains",
+            "matches",
+            "exists"
+          ],
+          "title": "Op",
+          "type": "string"
+        },
+        "value": {
+          "default": null,
+          "title": "Value"
+        },
+        "param": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Param"
+        }
+      },
+      "required": [
+        "fact",
+        "op"
+      ],
+      "title": "Leaf",
+      "type": "object"
+    },
+    "MatchingSection": {
+      "additionalProperties": false,
+      "properties": {
+        "clause": {
+          "default": "",
+          "title": "Clause",
+          "type": "string"
+        },
+        "threshold": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "string"
+            }
+          ],
+          "title": "Threshold"
+        },
+        "numeric_guard": {
+          "default": true,
+          "title": "Numeric Guard",
+          "type": "boolean"
+        },
+        "replacements": {
+          "items": {
+            "$ref": "#/$defs/Replacement"
+          },
+          "title": "Replacements",
+          "type": "array"
+        },
+        "noise_phrases": {
+          "items": {
+            "$ref": "#/$defs/NoisePhrase"
+          },
+          "title": "Noise Phrases",
+          "type": "array"
+        },
+        "abbreviations": {
+          "additionalProperties": {
+            "type": "string"
+          },
+          "title": "Abbreviations",
+          "type": "object"
+        }
+      },
+      "required": [
+        "threshold"
+      ],
+      "title": "MatchingSection",
+      "type": "object"
+    },
+    "NoisePhrase": {
+      "additionalProperties": false,
+      "properties": {
+        "pattern": {
+          "minLength": 1,
+          "title": "Pattern",
+          "type": "string"
+        },
+        "flag": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Flag"
+        }
+      },
+      "required": [
+        "pattern"
+      ],
+      "title": "NoisePhrase",
+      "type": "object"
+    },
+    "NotOf": {
+      "additionalProperties": false,
+      "properties": {
+        "not": {
+          "oneOf": [
+            {
+              "$ref": "#/$defs/Leaf"
+            },
+            {
+              "$ref": "#/$defs/AllOf"
+            },
+            {
+              "$ref": "#/$defs/AnyOf"
+            },
+            {
+              "$ref": "#/$defs/NotOf"
+            },
+            {
+              "$ref": "#/$defs/Always"
+            }
+          ],
+          "title": "Not"
+        }
+      },
+      "required": [
+        "not"
+      ],
+      "title": "NotOf",
+      "type": "object"
+    },
+    "Outcome": {
+      "additionalProperties": false,
+      "properties": {
+        "decision": {
+          "enum": [
+            "PO",
+            "SOURCING_REQUEST"
+          ],
+          "title": "Decision",
+          "type": "string"
+        },
+        "route": {
+          "pattern": "^[A-Z][A-Z0-9_]*$",
+          "title": "Route",
+          "type": "string"
+        },
+        "supplier": {
+          "anyOf": [
+            {
+              "pattern": "^(contract|none|preferred:[1-9]\\d*|fixed:[A-Za-z0-9_-]+)$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Supplier"
+        },
+        "price": {
+          "anyOf": [
+            {
+              "enum": [
+                "contract_rate",
+                "reference_price",
+                "last_po_price",
+                "standard_price"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Price"
+        },
+        "suggest": {
+          "default": 0,
+          "maximum": 20,
+          "minimum": 0,
+          "title": "Suggest",
+          "type": "integer"
+        },
+        "flags": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Flags",
+          "type": "array"
+        },
+        "requires_approval": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Requires Approval",
+          "type": "array"
+        }
+      },
+      "required": [
+        "decision",
+        "route"
+      ],
+      "title": "Outcome",
+      "type": "object"
+    },
+    "ParamDef": {
+      "additionalProperties": false,
+      "properties": {
+        "value": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "string"
+            }
+          ],
+          "title": "Value"
+        },
+        "unit": {
+          "default": "",
+          "title": "Unit",
+          "type": "string"
+        },
+        "label": {
+          "default": "",
+          "title": "Label",
+          "type": "string"
+        },
+        "clause": {
+          "default": "",
+          "title": "Clause",
+          "type": "string"
+        }
+      },
+      "required": [
+        "value"
+      ],
+      "title": "ParamDef",
+      "type": "object"
+    },
+    "PreferredSection": {
+      "additionalProperties": false,
+      "properties": {
+        "clause": {
+          "default": "",
+          "title": "Clause",
+          "type": "string"
+        },
+        "lookback_param": {
+          "title": "Lookback Param",
+          "type": "string"
+        },
+        "include_contract_holders": {
+          "default": true,
+          "title": "Include Contract Holders",
+          "type": "boolean"
+        },
+        "weights": {
+          "$ref": "#/$defs/RankingWeights"
+        },
+        "frequency": {
+          "const": "relative_to_max",
+          "default": "relative_to_max",
+          "title": "Frequency",
+          "type": "string"
+        },
+        "recency_bands": {
+          "items": {
+            "$ref": "#/$defs/RecencyBand"
+          },
+          "title": "Recency Bands",
+          "type": "array"
+        },
+        "rating_scales": {
+          "$ref": "#/$defs/RatingScales"
+        },
+        "tie_breakers": {
+          "items": {
+            "enum": [
+              "last_po_date_desc",
+              "po_count_desc",
+              "supplier_id_asc"
+            ],
+            "type": "string"
+          },
+          "title": "Tie Breakers",
+          "type": "array"
+        },
+        "reference_price": {
+          "items": {
+            "enum": [
+              "latest_po_in_window",
+              "latest_contract_rate"
+            ],
+            "type": "string"
+          },
+          "minItems": 1,
+          "title": "Reference Price",
+          "type": "array"
+        },
+        "export_top": {
+          "minimum": 1,
+          "title": "Export Top",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "lookback_param",
+        "weights",
+        "recency_bands",
+        "rating_scales",
+        "tie_breakers",
+        "reference_price",
+        "export_top"
+      ],
+      "title": "PreferredSection",
+      "type": "object"
+    },
+    "RankingWeights": {
+      "additionalProperties": false,
+      "properties": {
+        "frequency": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "string"
+            }
+          ],
+          "title": "Frequency"
+        },
+        "recency": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "string"
+            }
+          ],
+          "title": "Recency"
+        },
+        "contract": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "string"
+            }
+          ],
+          "title": "Contract"
+        },
+        "on_time": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "string"
+            }
+          ],
+          "title": "On Time"
+        },
+        "quality": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "string"
+            }
+          ],
+          "title": "Quality"
+        }
+      },
+      "required": [
+        "frequency",
+        "recency",
+        "contract",
+        "on_time",
+        "quality"
+      ],
+      "title": "RankingWeights",
+      "type": "object"
+    },
+    "RatingScales": {
+      "additionalProperties": false,
+      "properties": {
+        "on_time_pct": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "string"
+            }
+          ],
+          "title": "On Time Pct"
+        },
+        "quality_rating": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "string"
+            }
+          ],
+          "title": "Quality Rating"
+        }
+      },
+      "required": [
+        "on_time_pct",
+        "quality_rating"
+      ],
+      "title": "RatingScales",
+      "type": "object"
+    },
+    "RecencyBand": {
+      "additionalProperties": false,
+      "properties": {
+        "within_days": {
+          "minimum": 0,
+          "title": "Within Days",
+          "type": "integer"
+        },
+        "score": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "string"
+            }
+          ],
+          "title": "Score"
+        }
+      },
+      "required": [
+        "within_days",
+        "score"
+      ],
+      "title": "RecencyBand",
+      "type": "object"
+    },
+    "Replacement": {
+      "additionalProperties": false,
+      "properties": {
+        "find": {
+          "minLength": 1,
+          "title": "Find",
+          "type": "string"
+        },
+        "replace": {
+          "title": "Replace",
+          "type": "string"
+        }
+      },
+      "required": [
+        "find",
+        "replace"
+      ],
+      "title": "Replacement",
+      "type": "object"
+    },
+    "RequirementSection": {
+      "additionalProperties": false,
+      "properties": {
+        "emergency_urgencies": {
+          "items": {
+            "type": "string"
+          },
+          "minItems": 1,
+          "title": "Emergency Urgencies",
+          "type": "array"
+        }
+      },
+      "required": [
+        "emergency_urgencies"
+      ],
+      "title": "RequirementSection",
+      "type": "object"
+    },
+    "ReviewFlags": {
+      "additionalProperties": false,
+      "properties": {
+        "possible_duplicate_minutes": {
+          "minimum": 0,
+          "title": "Possible Duplicate Minutes",
+          "type": "integer"
+        },
+        "description_mismatch_below": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "string"
+            }
+          ],
+          "title": "Description Mismatch Below"
+        }
+      },
+      "required": [
+        "possible_duplicate_minutes",
+        "description_mismatch_below"
+      ],
+      "title": "ReviewFlags",
+      "type": "object"
+    },
+    "RouteInfo": {
+      "additionalProperties": false,
+      "properties": {
+        "label": {
+          "default": "",
+          "title": "Label",
+          "type": "string"
+        },
+        "description": {
+          "default": "",
+          "title": "Description",
+          "type": "string"
+        }
+      },
+      "title": "RouteInfo",
+      "type": "object"
+    },
+    "Rule": {
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "minLength": 1,
+          "title": "Id",
+          "type": "string"
+        },
+        "clause": {
+          "default": "",
+          "title": "Clause",
+          "type": "string"
+        },
+        "name": {
+          "minLength": 1,
+          "title": "Name",
+          "type": "string"
+        },
+        "description": {
+          "default": "",
+          "title": "Description",
+          "type": "string"
+        },
+        "enabled": {
+          "default": true,
+          "title": "Enabled",
+          "type": "boolean"
+        },
+        "when": {
+          "oneOf": [
+            {
+              "$ref": "#/$defs/Leaf"
+            },
+            {
+              "$ref": "#/$defs/AllOf"
+            },
+            {
+              "$ref": "#/$defs/AnyOf"
+            },
+            {
+              "$ref": "#/$defs/NotOf"
+            },
+            {
+              "$ref": "#/$defs/Always"
+            }
+          ],
+          "title": "When"
+        },
+        "then": {
+          "$ref": "#/$defs/Outcome"
+        }
+      },
+      "required": [
+        "id",
+        "name",
+        "when",
+        "then"
+      ],
+      "title": "Rule",
+      "type": "object"
+    },
+    "SuggestionsSection": {
+      "additionalProperties": false,
+      "properties": {
+        "clause": {
+          "default": "",
+          "title": "Clause",
+          "type": "string"
+        },
+        "topup": {
+          "default": "category_by_delivery_quality",
+          "enum": [
+            "category_by_delivery_quality",
+            "none"
+          ],
+          "title": "Topup",
+          "type": "string"
+        },
+        "topup_weights": {
+          "$ref": "#/$defs/TopupWeights"
+        },
+        "new_item": {
+          "const": "none",
+          "default": "none",
+          "title": "New Item",
+          "type": "string"
+        }
+      },
+      "required": [
+        "topup_weights"
+      ],
+      "title": "SuggestionsSection",
+      "type": "object"
+    },
+    "SupplierEligibility": {
+      "additionalProperties": false,
+      "properties": {
+        "clause": {
+          "default": "",
+          "title": "Clause",
+          "type": "string"
+        },
+        "allowed_statuses": {
+          "items": {
+            "type": "string"
+          },
+          "minItems": 1,
+          "title": "Allowed Statuses",
+          "type": "array"
+        },
+        "overrides": {
+          "items": {
+            "$ref": "#/$defs/SupplierOverride"
+          },
+          "title": "Overrides",
+          "type": "array"
+        }
+      },
+      "required": [
+        "allowed_statuses"
+      ],
+      "title": "SupplierEligibility",
+      "type": "object"
+    },
+    "SupplierOverride": {
+      "additionalProperties": false,
+      "properties": {
+        "supplier_id": {
+          "title": "Supplier Id",
+          "type": "string"
+        },
+        "status": {
+          "title": "Status",
+          "type": "string"
+        },
+        "reason": {
+          "default": "",
+          "title": "Reason",
+          "type": "string"
+        },
+        "effective_from": {
+          "anyOf": [
+            {
+              "format": "date",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Effective From"
+        },
+        "effective_to": {
+          "anyOf": [
+            {
+              "format": "date",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Effective To"
+        }
+      },
+      "required": [
+        "supplier_id",
+        "status"
+      ],
+      "title": "SupplierOverride",
+      "type": "object"
+    },
+    "TopupWeights": {
+      "additionalProperties": false,
+      "properties": {
+        "on_time": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "string"
+            }
+          ],
+          "title": "On Time"
+        },
+        "quality": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "string"
+            }
+          ],
+          "title": "Quality"
+        }
+      },
+      "required": [
+        "on_time",
+        "quality"
+      ],
+      "title": "TopupWeights",
+      "type": "object"
+    },
+    "ValuationSection": {
+      "additionalProperties": false,
+      "properties": {
+        "clause": {
+          "default": "",
+          "title": "Clause",
+          "type": "string"
+        },
+        "sources": {
+          "items": {
+            "enum": [
+              "contract_rate",
+              "last_po_price",
+              "standard_price"
+            ],
+            "type": "string"
+          },
+          "minItems": 1,
+          "title": "Sources",
+          "type": "array"
+        },
+        "last_po_lookback_param": {
+          "title": "Last Po Lookback Param",
+          "type": "string"
+        },
+        "new_item": {
+          "const": "requester_estimate",
+          "default": "requester_estimate",
+          "title": "New Item",
+          "type": "string"
+        }
+      },
+      "required": [
+        "sources",
+        "last_po_lookback_param"
+      ],
+      "title": "ValuationSection",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "policy_id": {
+      "title": "Policy Id",
+      "type": "string"
+    },
+    "version": {
+      "minLength": 1,
+      "title": "Version",
+      "type": "string"
+    },
+    "effective_from": {
+      "format": "date",
+      "title": "Effective From",
+      "type": "string"
+    },
+    "title": {
+      "default": "",
+      "title": "Title",
+      "type": "string"
+    },
+    "params": {
+      "additionalProperties": {
+        "$ref": "#/$defs/ParamDef"
+      },
+      "title": "Params",
+      "type": "object"
+    },
+    "requirement": {
+      "$ref": "#/$defs/RequirementSection"
+    },
+    "matching": {
+      "$ref": "#/$defs/MatchingSection"
+    },
+    "supplier_eligibility": {
+      "$ref": "#/$defs/SupplierEligibility"
+    },
+    "item_sets": {
+      "additionalProperties": {
+        "$ref": "#/$defs/ItemSet"
+      },
+      "title": "Item Sets",
+      "type": "object"
+    },
+    "clubbing": {
+      "$ref": "#/$defs/ClubbingSection"
+    },
+    "valuation": {
+      "$ref": "#/$defs/ValuationSection"
+    },
+    "contracts": {
+      "$ref": "#/$defs/ContractsSection"
+    },
+    "preferred_suppliers": {
+      "$ref": "#/$defs/PreferredSection"
+    },
+    "suggestions": {
+      "$ref": "#/$defs/SuggestionsSection"
+    },
+    "consolidation": {
+      "$ref": "#/$defs/ConsolidationSection"
+    },
+    "review_flags": {
+      "$ref": "#/$defs/ReviewFlags"
+    },
+    "routes": {
+      "additionalProperties": {
+        "$ref": "#/$defs/RouteInfo"
+      },
+      "title": "Routes",
+      "type": "object"
+    },
+    "rules": {
+      "items": {
+        "$ref": "#/$defs/Rule"
+      },
+      "minItems": 1,
+      "title": "Rules",
+      "type": "array"
+    }
+  },
+  "required": [
+    "policy_id",
+    "version",
+    "effective_from",
+    "params",
+    "requirement",
+    "matching",
+    "supplier_eligibility",
+    "clubbing",
+    "valuation",
+    "contracts",
+    "preferred_suppliers",
+    "suggestions",
+    "consolidation",
+    "review_flags",
+    "rules"
+  ],
+  "title": "Policy",
+  "type": "object"
+}
