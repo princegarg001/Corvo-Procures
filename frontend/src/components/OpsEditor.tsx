@@ -39,7 +39,9 @@ export function OpsEditor({ ops, onChange }: { ops: Op[]; onChange: (ops: Op[]) 
   const [type, setType] = useState("set_param");
   const [json, setJson] = useState(JSON.stringify(ops, null, 2));
   const [jsonErr, setJsonErr] = useState("");
-  useEffect(() => setJson(JSON.stringify(ops, null, 2)), [ops]);
+  useEffect(() => {
+    setJson(JSON.stringify(ops, null, 2));
+  }, [ops]);
 
   const add = (op: Op) => onChange([...ops, op]);
   const ctx = {

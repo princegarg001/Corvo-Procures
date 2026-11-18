@@ -81,3 +81,14 @@ test("procurement amends the policy in the editor, approves, re-runs and compare
   await page.locator("select").first().selectOption("1");
   await expect(page.getByText(/RFQ → SPOT_PO/).first()).toBeVisible();
 });
+
+test("chat survives a browser extension whose scrollIntoView returns a value", async ({ page }) => {
+  // regression: an effect that returned scrollIntoView's result made React call it as a cleanup function
+  await page.addInitScript(() => {
+    Element.prototype.scrollIntoView = function () { return { done: true } as unknown as undefined; };
+  });
+  await as(page, "Rahul");
+  await page.goto("/chat");
+  await expect(page.getByText("Raise a purchase request")).toBeVisible();
+  await expect(page.getByText("This page hit an error")).toHaveCount(0);
+});

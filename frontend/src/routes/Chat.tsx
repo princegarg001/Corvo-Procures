@@ -30,7 +30,10 @@ export default function ChatPage() {
     if (!session || session.user !== user) start.mutate();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user]);
-  useEffect(() => endRef.current?.scrollIntoView({ behavior: "smooth" }), [session?.messages.length, send.isPending]);
+  useEffect(() => {
+    // braces on purpose: an effect must return nothing or a cleanup function, never scrollIntoView's result
+    endRef.current?.scrollIntoView({ behavior: "smooth" });
+  }, [session?.messages.length, send.isPending]);
 
   const pending = send.isPending ? send.variables : null;
   const messages: ChatMessage[] = [...(session?.messages ?? [])];
