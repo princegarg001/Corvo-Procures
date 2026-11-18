@@ -27,6 +27,8 @@ def client(tmp_path_factory: pytest.TempPathFactory) -> Iterator[TestClient]:
     db = tmp_path_factory.mktemp("db") / "api.db"
     os.environ["DATABASE_URL"] = f"sqlite:///{db.as_posix()}"
     os.environ["LOG_JSON"] = "0"
+    os.environ["GEMINI_API_KEY"] = ""  # these tests exercise the no-AI path; never call a real provider
+    os.environ["GROQ_API_KEY"] = ""
     os.environ["STATIC_DIR"] = str(tmp_path_factory.mktemp("nostatic"))
     from app import config
     from app import db as dbmod

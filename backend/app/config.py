@@ -49,10 +49,10 @@ class Settings:
     database_url: str = field(default_factory=lambda: normalise_db_url(
         os.getenv("DATABASE_URL") or f"sqlite:///{(REPO_ROOT / 'backend' / 'var' / 'corvo.db').as_posix()}"))
     gemini_api_key: str = field(default_factory=lambda: os.getenv("GEMINI_API_KEY", ""))
-    gemini_model: str = field(default_factory=lambda: os.getenv("GEMINI_MODEL", "gemini-2.5-flash"))
+    gemini_model: str = field(default_factory=lambda: os.getenv("GEMINI_MODEL", "gemini-3.5-flash-lite"))
     groq_api_key: str = field(default_factory=lambda: os.getenv("GROQ_API_KEY", ""))
-    groq_model: str = field(default_factory=lambda: os.getenv("GROQ_MODEL", "llama-3.3-70b-versatile"))
-    llm_timeout_s: float = field(default_factory=lambda: float(os.getenv("LLM_TIMEOUT_S", "20")))
+    groq_model: str = field(default_factory=lambda: os.getenv("GROQ_MODEL", "openai/gpt-oss-120b"))
+    llm_timeout_s: float = field(default_factory=lambda: float(os.getenv("LLM_TIMEOUT_S", "45")))
     app_tz: str = field(default_factory=lambda: os.getenv("APP_TZ", "Asia/Kolkata"))
     kit_dir: Path = field(default_factory=lambda: Path(os.getenv("KIT_DIR", str(REPO_ROOT / "data" / "kit"))))
     policy_dir: Path = field(default_factory=lambda: Path(os.getenv("POLICY_DIR", str(REPO_ROOT / "policies"))))
