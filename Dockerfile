@@ -1,6 +1,6 @@
 # syntax=docker/dockerfile:1
-# Stage 1: build the React SPA
-FROM node:20-alpine AS ui
+# Stage 1: build the React SPA (Debian-based Node: Alpine's musl stack is too small for Rollup's parser)
+FROM node:20-slim AS ui
 WORKDIR /ui
 COPY frontend/package.json frontend/package-lock.json ./
 RUN npm ci --no-audit --no-fund
