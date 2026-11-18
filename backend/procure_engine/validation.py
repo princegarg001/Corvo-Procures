@@ -13,7 +13,7 @@ import re
 from typing import Any
 
 from .facts import REGISTRY, TYPE_OPS, UnknownFact, parse_fact_name
-from .policy_schema import AllOf, Always, AnyOf, Leaf, NotOf, Policy, walk_leaves
+from .policy_schema import Always, Leaf, Policy, walk_leaves
 
 
 def _check_leaf(leaf: Leaf, policy: Policy, where: str, *, line_scope: bool) -> list[str]:
@@ -119,8 +119,6 @@ def lint(policy: Policy, *, known_routes: set[str] | None = None, supplier_ids: 
         sup = rule.then.supplier or ""
         if sup.startswith("fixed:") and supplier_ids is not None and sup[6:] not in supplier_ids:
             warns.append(f"Rule {rule.id} names supplier {sup[6:]}, which is not in the supplier master")
-        if isinstance(rule.when, AllOf | AnyOf | NotOf):
-            pass
     for i, a in enumerate(active):
         for b in active[i + 1 :]:
             if a.when == b.when:

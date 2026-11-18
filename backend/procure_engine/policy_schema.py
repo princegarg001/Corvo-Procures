@@ -17,6 +17,7 @@ from typing import Annotated, Any, Literal
 
 from pydantic import (
     BaseModel,
+    BeforeValidator,
     ConfigDict,
     Discriminator,
     Field,
@@ -37,7 +38,7 @@ def _num_out(value: Decimal) -> int | float:
     return float(value)
 
 
-Num = Annotated[Decimal, PlainSerializer(_num_out, when_used="json")]
+Num = Annotated[Decimal, BeforeValidator(lambda v: to_decimal(v)), PlainSerializer(_num_out, when_used="json")]
 
 OPS: tuple[str, ...] = (
     "eq", "ne", "in", "not_in", "lt", "lte", "gt", "gte", "between", "contains", "matches", "exists",
