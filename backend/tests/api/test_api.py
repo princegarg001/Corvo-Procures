@@ -122,6 +122,8 @@ def test_milestone_flow(client: TestClient) -> None:
     a, b = next(r["id"] for r in runs if r["name"] == "Run 1"), next(r["id"] for r in runs if r["name"] == "Run 2")
     cmp = client.get("/api/runs/compare", params={"a": a, "b": b}).json()
     assert cmp["summary"]["route_moves"] == {"RFQ → SPOT_PO": sum(moves.values())}
+    assert all(set(c["changes"]) - {"policy_version"} for c in cmp["changed"]), "version-only lines are not changes"
+    assert cmp["summary"]["lines_changed"] < sum(1 for r in run2 if r["policy_version"] == "5.1")
 
     # duplicate upload of the same amendment is flagged
     dup = client.post("/api/policy/amendments", json={"ops": ops, "effective_from": "2026-11-10"}, headers=ADMIN).json()

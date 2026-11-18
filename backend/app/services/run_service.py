@@ -190,8 +190,11 @@ def compare_rows(a: list[dict[str, str]], b: list[dict[str, str]]) -> dict[str, 
         if key not in kb:
             continue
         ra, rb = ka[key], kb[key]
-        diffs = {f: [ra[f], rb[f]] for f in COMPARE_FIELDS if ra.get(f) != rb.get(f) and f not in ("group_id", "po_id")}
-        if diffs:
+        diffs = {f: [ra[f], rb[f]] for f in COMPARE_FIELDS
+                 if ra.get(f) != rb.get(f) and f not in ("group_id", "po_id", "policy_version")}
+        if diffs:  # a version bump alone is not a decision change; show it only alongside a real one
+            if ra.get("policy_version") != rb.get("policy_version"):
+                diffs["policy_version"] = [ra["policy_version"], rb["policy_version"]]
             changed.append({"pr_no": key[0], "pr_line": key[1], "changes": diffs,
                             "old_reason": ra["reason"], "new_reason": rb["reason"],
                             "old_route": ra["route"], "new_route": rb["route"]})

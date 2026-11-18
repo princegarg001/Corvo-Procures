@@ -3,6 +3,7 @@ import ReactDOM from "react-dom/client";
 import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import "./index.css";
+import { ErrorBoundary } from "@/components/ErrorBoundary";
 import { Layout } from "@/components/Layout";
 import { UserProvider, useUser } from "@/lib/user";
 import ChatPage from "@/routes/Chat";
@@ -30,10 +31,12 @@ function Home() {
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
+    <ErrorBoundary>
     <QueryClientProvider client={qc}>
       <UserProvider>
         <BrowserRouter>
           <Layout>
+            <ErrorBoundary>
             <Routes>
               <Route path="/" element={<Home />} />
               <Route path="/chat" element={<ChatPage />} />
@@ -51,9 +54,11 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
               <Route path="/audit" element={<AuditPage />} />
               <Route path="*" element={<Navigate to="/" replace />} />
             </Routes>
+            </ErrorBoundary>
           </Layout>
         </BrowserRouter>
       </UserProvider>
     </QueryClientProvider>
+    </ErrorBoundary>
   </React.StrictMode>,
 );

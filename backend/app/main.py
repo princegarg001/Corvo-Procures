@@ -136,7 +136,7 @@ def create_app(*, run_startup: bool = True) -> FastAPI:
             candidate = static / full_path
             if full_path and candidate.is_file() and static in candidate.resolve().parents:
                 return FileResponse(candidate)
-            return FileResponse(static / "index.html")
+            return FileResponse(static / "index.html", headers={"Cache-Control": "no-cache, must-revalidate"})
 
     return app
 
