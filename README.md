@@ -6,6 +6,11 @@ change the policy (by document, chat or editor) without any code change.
 
 **Hosted app:** https://corvo-procure.onrender.com · **API docs:** [/docs](https://corvo-procure.onrender.com/docs) · ![CI](https://github.com/princegarg001/corvo-procure/actions/workflows/ci.yml/badge.svg)
 
+## Task data is not in this repo
+The Cantill task kit (brief, policy, worked examples, master data, contracts, sample batch) is deliberately **not
+committed**. The hosted app is already seeded. To seed a fresh database or run the data-dependent tests, place the
+kit in `data/kit/` (or set `KIT_DIR`); without it the app starts with no master data and those tests skip.
+
 ## Run it
 ```bash
 docker compose up            # Postgres + app → http://localhost:8000
@@ -128,7 +133,7 @@ scripts. See [APPROACH.md](APPROACH.md), [DECISIONS.md](DECISIONS.md) and [docs/
 
 ## Tests
 ```bash
-cd backend && pytest -q                       # golden (14 examples, 3 rankings, 39 matches), snapshot, boundaries,
+cd backend && pytest -q                       # with the kit in data/kit: golden, snapshot, boundaries,
                                               # Hypothesis invariants, A1–A12 drills, API, 21 chat scripts
 .venv/bin/python scripts/check_no_policy_constants.py   # no policy constants or IDs in the engine
 bash scripts/e2e.sh                           # Playwright smoke (needs the built SPA)
