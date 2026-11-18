@@ -65,18 +65,20 @@ def get_settings() -> Settings:
 
 
 def today() -> date:
-    """Today's date in the app timezone (Asia/Kolkata by default)."""
-    from datetime import datetime
-    from zoneinfo import ZoneInfo
-
-    return datetime.now(ZoneInfo(get_settings().app_tz)).date()
+    """Today's date in the app timezone (Asia/Kolkata); APP_TODAY=YYYY-MM-DD pins it for demos/tests."""
+    return now_local().date()
 
 
 def now_local():  # type: ignore[no-untyped-def]
     from datetime import datetime
     from zoneinfo import ZoneInfo
 
-    return datetime.now(ZoneInfo(get_settings().app_tz))
+    now = datetime.now(ZoneInfo(get_settings().app_tz))
+    pinned = os.getenv("APP_TODAY")
+    if pinned:
+        d = date.fromisoformat(pinned)
+        now = now.replace(year=d.year, month=d.month, day=d.day)
+    return now
 
 
 def reset_settings() -> None:
