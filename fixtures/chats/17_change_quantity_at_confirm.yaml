@@ -1,0 +1,19 @@
+name: 17_change_quantity_at_confirm
+description: At the confirm card the user changes the quantity.
+turns:
+- say: need 200 nitrile gloves for Chakan by next Friday
+  expect:
+    pending: urgency
+- value: Normal
+  expect:
+    stage: confirm
+- say: make it 300
+  expect:
+    stage: confirm
+- value: confirm
+  expect:
+    stage: created
+final:
+  lines:
+  - item_code: ITM-1048
+    qty: '300'

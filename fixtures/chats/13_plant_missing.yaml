@@ -1,0 +1,23 @@
+name: 13_plant_missing
+description: 'Plant missing: chips with the plant names.'
+turns:
+- say: need 300 cotton hand gloves by next friday
+  expect:
+    pending: plant
+    chips_include:
+    - CHK1
+    - PUN1
+- say: chakan
+  expect:
+    pending: urgency
+- value: Normal
+  expect:
+    stage: confirm
+- value: confirm
+  expect:
+    stage: created
+final:
+  lines:
+  - item_code: ITM-1047
+    qty: '300'
+  plant: CHK1

@@ -1,0 +1,21 @@
+name: 12_zero_quantity
+description: Quantity zero is not accepted.
+turns:
+- say: 0 safety helmets for chakan by next friday
+  expect:
+    pending: qty
+    reply_contains:
+    - more than zero
+- say: '25'
+  expect:
+    pending: urgency
+- value: Normal
+  expect:
+    stage: confirm
+- value: confirm
+  expect:
+    stage: created
+final:
+  lines:
+  - item_code: ITM-1049
+    qty: '25'

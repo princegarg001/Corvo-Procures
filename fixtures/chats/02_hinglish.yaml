@@ -1,0 +1,19 @@
+name: 02_hinglish
+description: Hindi-English mix with 'ke liye', 'chahiye', 'tak'.
+turns:
+- say: Chakan ke liye 200 nitrile gloves chahiye next Friday tak
+  expect:
+    pending: urgency
+- say: normal
+  expect:
+    stage: confirm
+- value: confirm
+  expect:
+    stage: created
+final:
+  lines:
+  - item_code: ITM-1048
+    qty: '200'
+  plant: CHK1
+  need_by: '2026-11-27'
+max_turns: 3

@@ -1,0 +1,19 @@
+name: 14_item_code_given
+description: An item code typed in chat is used directly (policy 1.1).
+turns:
+- say: ITM-1057 x 3 for PUN1 by 30 Nov
+  expect:
+    pending: urgency
+    reply_contains:
+    - ITM-1057
+- value: Normal
+  expect:
+    stage: confirm
+- value: confirm
+  expect:
+    stage: created
+final:
+  lines:
+  - item_code: ITM-1057
+    qty: '3'
+  plant: PUN1

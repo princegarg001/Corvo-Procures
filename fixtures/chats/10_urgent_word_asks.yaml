@@ -1,0 +1,21 @@
+name: 10_urgent_word_asks
+description: 'The word ''urgent'' is never auto-set: the assistant asks.'
+turns:
+- say: 'urgent: 100 safety goggles for chakan by tomorrow'
+  expect:
+    pending: urgency
+    reply_contains:
+    - '''urgent'''
+    - Emergency
+- value: Emergency
+  expect:
+    stage: confirm
+- value: confirm
+  expect:
+    stage: created
+final:
+  lines:
+  - item_code: ITM-1050
+    qty: '100'
+  urgency: Emergency
+  need_by: '2026-11-19'

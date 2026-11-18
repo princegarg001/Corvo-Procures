@@ -1,0 +1,23 @@
+name: 04_vague_item_chips
+description: A vague item gives chips from the item master; the user picks one.
+turns:
+- say: need 300 gloves for chakan by next friday
+  expect:
+    pending: choose_item
+    chips_include:
+    - ITM-1047
+    - ITM-1048
+- value: ITM-1047
+  expect:
+    pending: urgency
+- value: Normal
+  expect:
+    stage: confirm
+- value: confirm
+  expect:
+    stage: created
+final:
+  lines:
+  - item_code: ITM-1047
+    qty: '300'
+  plant: CHK1

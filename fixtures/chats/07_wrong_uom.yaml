@@ -1,0 +1,23 @@
+name: 07_wrong_uom
+description: A unit that conflicts with the item master triggers a unit question.
+turns:
+- say: need 50 kg nitrile gloves for chakan by 30 Nov
+  expect:
+    pending: uom
+    reply_contains:
+    - PAIR
+- value: keep
+  expect:
+    pending: urgency
+- value: Normal
+  expect:
+    stage: confirm
+- value: confirm
+  expect:
+    stage: created
+final:
+  lines:
+  - item_code: ITM-1048
+    qty: '50'
+    uom: PAIR
+  need_by: '2026-11-30'

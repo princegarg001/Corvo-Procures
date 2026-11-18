@@ -1,0 +1,23 @@
+name: 11_past_date
+description: A need-by date in the past is rejected and asked again.
+turns:
+- say: need 20 hex bolt m10x40 for pune by 1 Nov 2026
+  expect:
+    pending: need_by
+    reply_contains:
+    - already passed
+- say: next friday
+  expect:
+    pending: urgency
+- value: Normal
+  expect:
+    stage: confirm
+- value: confirm
+  expect:
+    stage: created
+final:
+  lines:
+  - item_code: ITM-1009
+    qty: '20'
+  plant: PUN1
+  need_by: '2026-11-27'

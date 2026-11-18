@@ -1,0 +1,23 @@
+name: 21_new_item_estimate_asked
+description: 'A new item without a price: the estimate is asked separately.'
+turns:
+- say: need 2 ultrasonic thickness gauge for chakan by next friday
+  expect:
+    pending: is_new
+- value: 'yes'
+  expect:
+    pending: estimate
+- say: '105600'
+  expect:
+    pending: urgency
+- value: Normal
+  expect:
+    stage: confirm
+- value: confirm
+  expect:
+    stage: created
+final:
+  lines:
+  - item_code: NEW
+    qty: '2'
+    est_price: '105600'

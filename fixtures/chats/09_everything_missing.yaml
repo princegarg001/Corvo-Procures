@@ -1,0 +1,30 @@
+name: 09_everything_missing
+description: 'Only an item: the assistant asks one thing at a time.'
+turns:
+- say: I need some bearings
+  expect:
+    pending: choose_item
+- value: ITM-1021
+  expect:
+    pending: qty
+- say: '110'
+  expect:
+    pending: plant
+- value: CHK1
+  expect:
+    pending: need_by
+- value: next friday
+  expect:
+    pending: urgency
+- value: Normal
+  expect:
+    stage: confirm
+- value: confirm
+  expect:
+    stage: created
+final:
+  lines:
+  - item_code: ITM-1021
+    qty: '110'
+  plant: CHK1
+  need_by: '2026-11-27'

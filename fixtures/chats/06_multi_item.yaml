@@ -1,0 +1,22 @@
+name: 06_multi_item
+description: Two items in one message become a two-line PR.
+turns:
+- say: need 200 nitrile gloves and 10 safety helmets for Chakan by next Friday
+  expect:
+    pending: urgency
+- value: Normal
+  expect:
+    stage: confirm
+    card_items:
+    - ITM-1048
+    - ITM-1049
+- value: confirm
+  expect:
+    stage: created
+final:
+  lines:
+  - item_code: ITM-1048
+    qty: '200'
+  - item_code: ITM-1049
+    qty: '10'
+  plant: CHK1

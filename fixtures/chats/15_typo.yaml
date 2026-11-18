@@ -1,0 +1,21 @@
+name: 15_typo
+description: Typos are handled by fuzzy candidates from the item master only.
+turns:
+- say: need 100 nitrle glovs for chakan by next friday
+  expect:
+    pending: choose_item
+    chips_include:
+    - ITM-1048
+- value: ITM-1048
+  expect:
+    pending: urgency
+- value: Normal
+  expect:
+    stage: confirm
+- value: confirm
+  expect:
+    stage: created
+final:
+  lines:
+  - item_code: ITM-1048
+    qty: '100'

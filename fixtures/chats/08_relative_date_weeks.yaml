@@ -1,0 +1,20 @@
+name: 08_relative_date_weeks
+description: '''in 2 weeks'' resolves against today in IST.'
+turns:
+- say: need 40 pneu cylinder 50x100 for chakan in 2 weeks
+  expect:
+    pending: urgency
+    reply_contains:
+    - ITM-1036
+    - Wed 02 Dec 2026
+- value: Normal
+  expect:
+    stage: confirm
+- value: confirm
+  expect:
+    stage: created
+final:
+  lines:
+  - item_code: ITM-1036
+    qty: '40'
+  need_by: '2026-12-02'

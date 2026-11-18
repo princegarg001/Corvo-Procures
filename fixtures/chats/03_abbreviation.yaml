@@ -1,0 +1,21 @@
+name: 03_abbreviation
+description: 'Short forms: brg means bearing; the quantity with a unit wins over the
+  part number.'
+turns:
+- say: brg 6308 zz 210 nos for bhosari by 25th
+  expect:
+    pending: urgency
+    reply_contains:
+    - ITM-1022
+- value: Normal
+  expect:
+    stage: confirm
+- value: confirm
+  expect:
+    stage: created
+final:
+  lines:
+  - item_code: ITM-1022
+    qty: '210'
+  plant: PUN1
+  need_by: '2026-11-25'

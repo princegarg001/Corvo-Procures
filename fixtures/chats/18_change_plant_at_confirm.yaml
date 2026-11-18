@@ -1,0 +1,20 @@
+name: 18_change_plant_at_confirm
+description: At the confirm card the user changes the plant.
+turns:
+- say: need 200 nitrile gloves for Chakan by next Friday
+  expect:
+    pending: urgency
+- value: Normal
+  expect:
+    stage: confirm
+- say: actually for Bhosari
+  expect:
+    stage: confirm
+- value: confirm
+  expect:
+    stage: created
+final:
+  lines:
+  - item_code: ITM-1048
+    qty: '200'
+  plant: PUN1

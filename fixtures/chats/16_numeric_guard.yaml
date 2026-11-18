@@ -1,0 +1,20 @@
+name: 16_numeric_guard
+description: '''ball bearing 6206'' must never become the 6205 bearing.'
+turns:
+- say: need 10 ball bearing 6206 for chakan by next friday
+  expect:
+    pending: is_new
+    chips_exclude:
+    - ITM-1021
+- say: yes, deep groove 6206 2RS, about Rs 260
+  expect:
+    pending: urgency
+- value: Normal
+  expect:
+    stage: confirm
+    card_routes:
+    - NEW_ITEM_SOURCING
+final:
+  lines:
+  - item_code: NEW
+    qty: '10'

@@ -1,0 +1,11 @@
+name: 19_off_topic
+description: Off-topic chatter gets a polite redirect and no PR draft.
+turns:
+- say: what's the weather like today?
+  expect:
+    reply_contains:
+    - purchase requests
+    lines: 0
+- say: need 5 ltr slideway oil 220 for chakan by next friday
+  expect:
+    pending: urgency

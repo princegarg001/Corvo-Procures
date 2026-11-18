@@ -1,0 +1,27 @@
+name: 01_brief_example
+description: The brief's example completes in 3 turns; 'next Friday' resolves to Fri
+  27 Nov.
+turns:
+- say: need 200 nitrile gloves for Chakan by next Friday
+  expect:
+    pending: urgency
+    reply_contains:
+    - ITM-1048
+    - Fri 27 Nov 2026
+- value: Normal
+  expect:
+    stage: confirm
+    card_items:
+    - ITM-1048
+- value: confirm
+  expect:
+    stage: created
+final:
+  lines:
+  - item_code: ITM-1048
+    qty: '200'
+    uom: PAIR
+  plant: CHK1
+  need_by: '2026-11-27'
+  urgency: Normal
+max_turns: 3

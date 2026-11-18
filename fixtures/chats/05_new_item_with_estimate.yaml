@@ -1,0 +1,26 @@
+name: 05_new_item_with_estimate
+description: 'Unknown item: asks if it is new; spec and estimate come in one answer.'
+turns:
+- say: need 1 drinking water purifier 50 LPH for Bhosari by next Monday
+  expect:
+    pending: is_new
+    reply_contains:
+    - can't find
+- say: yes, RO purifier 50 LPH, about Rs 141100
+  expect:
+    pending: urgency
+- value: Normal
+  expect:
+    stage: confirm
+    card_routes:
+    - NEW_ITEM_SOURCING
+- value: confirm
+  expect:
+    stage: created
+final:
+  lines:
+  - item_code: NEW
+    qty: '1'
+    est_price: '141100'
+  plant: PUN1
+  need_by: '2026-11-23'
