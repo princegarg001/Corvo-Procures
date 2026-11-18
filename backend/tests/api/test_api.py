@@ -193,3 +193,22 @@ def test_item_match(client: TestClient) -> None:
     r = client.get("/api/items/match", params={"q": "brg 6308 zz"}).json()
     assert r["resolved"] == "ITM-1022"
     assert client.get("/api/items/match", params={"q": "ball bearing 6206"}).json()["resolved"] == "NEW"
+
+
+def test_amendment_from_text_without_llm(client: TestClient) -> None:
+    text = (FIX / "A11.md").read_text(encoding="utf-8")
+    r = client.post("/api/policy/amendments", json={"text": text}, headers=ADMIN)
+    assert r.status_code == 200, r.text
+    body = r.json()
+    assert body["ai_meta"]["provider"] == "deterministic"
+    assert body["ops"][0]["op"] == "modify_rule" and body["ops"][0]["source_quote"] in text
+    assert body["effective_from"] == "2026-11-01" and body["status"] == "PROPOSED"
+    client.post(f"/api/policy/amendments/{body['id']}/reject", json={"comment": "test"}, headers=ADMIN)
+
+
+def test_amendment_document_upload_without_llm(client: TestClient) -> None:
+    data = (FIX / "A3.md").read_bytes()
+    body = client.post("/api/policy/amendments", files={"file": ("A3.md", data, "text/markdown")}, headers=ADMIN).json()
+    assert body["source_kind"] == "DOC" and body["source_text"].startswith("Amendment to the Procurement Policy")
+    assert [o for o in body["ops"] if o["op"] != "set_effective_from"] == [] and body["questions"]
+    client.post(f"/api/policy/amendments/{body['id']}/reject", json={"comment": "test"}, headers=ADMIN)
