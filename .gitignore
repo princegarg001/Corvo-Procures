@@ -28,3 +28,8 @@ out.csv
 Thumbs.db
 .idea/
 frontend/tsconfig.tsbuildinfo
+
+# Task data is never committed (the repo is public)
+data/kit/
+backend/tests/golden/*.yaml
+backend/tests/snapshot/*.csv

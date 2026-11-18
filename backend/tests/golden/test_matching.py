@@ -11,6 +11,9 @@ from procure_engine.pipeline import RunResult
 from procure_engine.policy_schema import Policy
 from tests.conftest import GOLDEN
 
+if not (GOLDEN / "free_text_matches.yaml").exists():
+    pytest.skip("golden fixtures are not included in the public repo", allow_module_level=True)
+
 SPEC = yaml.safe_load((GOLDEN / "free_text_matches.yaml").read_text(encoding="utf-8"))
 
 

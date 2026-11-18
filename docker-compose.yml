@@ -26,6 +26,9 @@ services:
       APP_TZ: Asia/Kolkata
       SEED_ON_START: "true"
       SEED_DEMO_RUN: "true"
+    volumes:
+      # optional: put the task kit in ./data/kit (not part of this repo) to seed master data on first start
+      - ./data/kit:/srv/data/kit:ro
     ports:
       - "8000:8000"
 

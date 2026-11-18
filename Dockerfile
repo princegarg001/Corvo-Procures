@@ -20,7 +20,6 @@ COPY backend/app backend/app
 COPY backend/alembic backend/alembic
 COPY backend/alembic.ini backend/alembic.ini
 RUN pip install -e ./backend
-COPY data/kit data/kit
 COPY policies policies
 COPY --from=ui /ui/dist frontend/dist
 RUN mkdir -p backend/var && chown -R corvo:corvo /srv

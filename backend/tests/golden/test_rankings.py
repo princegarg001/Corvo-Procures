@@ -12,6 +12,9 @@ from procure_engine.policy_schema import Policy
 from procure_engine.suppliers import SupplierBook
 from tests.conftest import GOLDEN
 
+if not (GOLDEN / "rankings.yaml").exists():
+    pytest.skip("golden fixtures are not included in the public repo", allow_module_level=True)
+
 SPEC = yaml.safe_load((GOLDEN / "rankings.yaml").read_text(encoding="utf-8"))
 
 

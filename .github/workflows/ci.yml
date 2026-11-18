@@ -31,21 +31,6 @@ jobs:
       - uses: actions/upload-artifact@v4
         with: { name: dist, path: frontend/dist }
 
-  e2e:
-    needs: [backend, frontend]
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
-        with: { python-version: "3.12" }
-      - uses: actions/setup-node@v4
-        with: { node-version: 20 }
-      - uses: actions/download-artifact@v4
-        with: { name: dist, path: frontend/dist }
-      - run: python -m venv .venv && .venv/bin/pip install -e backend
-      - run: cd e2e && npm ci && npx playwright install --with-deps chromium
-      - run: bash scripts/e2e.sh
-
   docker:
     runs-on: ubuntu-latest
     steps:

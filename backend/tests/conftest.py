@@ -41,3 +41,17 @@ def sample_rows() -> list[dict[str, str]]:
 @pytest.fixture(scope="session")
 def sample_run(sample_rows: list[dict[str, str]], master: MasterData, resolver: PolicyResolver) -> RunResult:
     return run_batch(sample_rows, master, resolver)
+
+
+KIT_PRESENT = (KIT / "master_data" / "item_master.csv").exists()
+NEEDS_KIT = {"master", "sample_run", "sample_rows", "client", "chat_client"}
+
+
+def pytest_collection_modifyitems(config: pytest.Config, items: list[pytest.Item]) -> None:
+    """The task data is not part of this public repo: tests that need it skip with a clear reason."""
+    if KIT_PRESENT:
+        return
+    skip = pytest.mark.skip(reason="task kit not found in data/kit (not included in the public repo)")
+    for item in items:
+        if NEEDS_KIT & set(getattr(item, "fixturenames", ())):
+            item.add_marker(skip)

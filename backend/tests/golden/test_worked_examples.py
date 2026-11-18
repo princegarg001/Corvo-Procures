@@ -12,6 +12,9 @@ from procure_engine.money import q2
 from procure_engine.pipeline import RunResult
 from tests.conftest import GOLDEN
 
+if not (GOLDEN / "worked_examples.yaml").exists():
+    pytest.skip("golden fixtures are not included in the public repo", allow_module_level=True)
+
 SPEC = yaml.safe_load((GOLDEN / "worked_examples.yaml").read_text(encoding="utf-8"))
 EXAMPLES = {e["id"]: e for e in SPEC["examples"]}
 

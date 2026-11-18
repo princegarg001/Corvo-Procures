@@ -42,6 +42,9 @@ def _count(session: Session, model: type) -> int:
 def seed_master(session: Session, kit: Path, settings: Settings) -> None:
     if _count(session, ItemRow):
         return
+    if not (kit / "master_data" / "item_master.csv").exists():
+        log.warning("seed: task kit not found at %s; master data not loaded (set KIT_DIR)", kit)
+        return
     md = kit / "master_data"
     for r in read_csv_rows(md / "plants.csv"):
         session.add(PlantRow(code=r["plant"], name=r["name"]))

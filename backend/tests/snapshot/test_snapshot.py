@@ -9,10 +9,14 @@ from __future__ import annotations
 
 from pathlib import Path
 
+import pytest
+
 from procure_engine.export import decisions_csv
 from procure_engine.pipeline import RunResult
 
 SNAPSHOT = Path(__file__).parent / "sample_batch_v5.csv"
+if not SNAPSHOT.exists():
+    pytest.skip("snapshot is not included in the public repo", allow_module_level=True)
 
 
 def test_sample_batch_matches_snapshot(sample_run: RunResult) -> None:
