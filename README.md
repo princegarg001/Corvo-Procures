@@ -4,7 +4,7 @@ A policy-driven procurement app for Corvo Engineering: employees raise purchase 
 decides, by the active procurement policy, whether to place a PO or raise a sourcing request; and Procurement can
 change the policy (by document, chat or editor) without any code change.
 
-**Hosted app:** _add the Render URL here_ · **API docs:** `<host>/docs` · ![CI](https://github.com/OWNER/corvo-procure/actions/workflows/ci.yml/badge.svg)
+**Hosted app:** https://corvo-procure.onrender.com · **API docs:** [/docs](https://corvo-procure.onrender.com/docs) · ![CI](https://github.com/princegarg001/corvo-procure/actions/workflows/ci.yml/badge.svg)
 
 ## Run it
 ```bash
