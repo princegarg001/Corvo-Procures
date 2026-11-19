@@ -98,3 +98,14 @@ deliberate. D8 is a no-op here, so the literal "before" reading stays. D23 follo
   expresses it without code (drill A4: an item set plus a new route).
 * **Short-pool suggestions** return fewer than requested rather than padding (D17).
 * **Chat "urgent"** never sets Emergency on its own (D3).
+
+## Blind test (19 Nov 2026): how Amendment No. 1 was applied
+Run 1 was processed pinned to v5.0. The amendment PDF was uploaded through the app's Policy feature and read by the
+LLM, then reviewed against its plain-language diff and impact preview before approval (v5.1, effective 1 Dec 2026).
+* **A2 (RFP threshold ₹8 L)** and **A3 (Chakan electrical, new rule 5.2A after 5.2)** were read correctly.
+* **A1 (Packaging spot limit ₹1 L)** was misread: the generated rule only kept Packaging below ₹1 L as a spot PO, so
+  ₹1–2 L Packaging requirements would still have matched the normal spot rule. The impact preview showed no Packaging
+  changes, which exposed it. It was corrected in the app's structured editor (new rule 5.4A before 5.4: Packaging,
+  value at or above ₹1,00,000 and below the RFP threshold → RFQ), then approved. No code was changed.
+* Run 2 reprocessed the same batch with no pin, so each requirement uses the version in force on its date
+  (92 lines on v5.0, 98 on v5.1). A pinned v5.0 re-run is byte-identical to Run 1.
